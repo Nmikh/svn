@@ -201,8 +201,12 @@ public class SymptomsService {
         for (int i = 0; i < recordSize; i++) {
             int tmpIndexes[] = nodeIndexes[i];
             double tmpValues[] = nodeValues[i];
+
+            System.out.print(i + 1);
+            System.out.print(" Expected: " + (float) dataSet.get(i).getCategory());
             double v = evaluateSingleInstance(tmpIndexes, tmpValues, model);
-            System.out.println(" Expected: " + (float) dataSet.get(i).getCategory());
+            System.out.print(", ");
+
 
             if ((float) dataSet.get(i).getCategory() == 1.0) {
                 positive++;
@@ -221,6 +225,9 @@ public class SymptomsService {
             }
         }
 
+        System.out.println();
+        System.out.println("Positive: " + positive);
+        System.out.println("Negative: " + negative);
         matrixModel.setAccuracy(
                 ((float) matrixModel.getTruePositive() + (float) matrixModel.getTrueNegative())
                         /
@@ -245,9 +252,6 @@ public class SymptomsService {
         double[] probEstimates = new double[totalClasses];
         double v = svm.svm_predict_probability(model, nodes, probEstimates);
 
-        for (int i = 0; i < totalClasses; i++) {
-            System.out.print("(" + labels[i] + ":" + probEstimates[i] + ")");
-        }
         System.out.print(" Prediction: " + v);
         return v;
     }
